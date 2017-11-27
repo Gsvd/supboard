@@ -1,0 +1,37 @@
+{% extends "public/base.html" %}
+
+{% block content %}
+    {% if plannings %}
+        {% for planning in plannings %}
+            {% if planning %}
+                <div class="row has-shadow">
+                    <div class="info col-2">
+                        <div class="grade">
+                            {{ planning.0.get_grade }}
+                        </div>
+                    </div>
+                    {% for course in planning %}
+                        <div class="col {% if course.exam_type %}is_exam{% endif %}">
+                            <div class="hour">
+                                <div class="first">{{ course.get_course_start }}</div>
+                                <div class="classroom"></div>
+                                <div class="second">{{ course.get_course_end }}</div>
+                            </div>
+                            <div class="course" style="font-weight: bold;">
+                                {{ course.course_code }}{% if course.exam_type %} - {{ course.exam_type }}{% endif %}
+                            </div>
+                            <div class="teacher">
+                                {{ course.teacher }}
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        {% endfor %}
+        <script>
+        setTimeout(function() {
+            location.reload();
+        }, 60000);
+        </script>
+    {% endif %}
+{% endblock %}

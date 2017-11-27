@@ -1,0 +1,13 @@
+.idea/
+venv/
+planning/migrations/*
+!planning/migrations/__init__.py
+admin_page/migrations/*
+!admin_page/migrations/__init__.py
+files/
+admin_page/__pycache__/
+supboard/__pycache__/
+planning/__pycache__/
+admin_page/migrations/
+db
+supboard/enums.py

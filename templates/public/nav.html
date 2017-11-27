@@ -1,0 +1,22 @@
+{% load staticfiles %}
+<header class="navbar">
+    <section class="navbar-section">
+        <a href="/planning" class="btn btn-link">Planning</a>
+    </section>
+    <section class="navbar-center">
+        <a href="/">
+            <img src="{% static "images/spectre_logo.svg" %}">
+        </a>
+    </section>
+    <section class="navbar-section">
+        <div class="input-group input-inline">
+            {% if user.is_authenticated %}
+                <a href="/admin/planning/upload" class="btn btn-link">Upload</a>
+                <a href="/database" class="btn btn-link">Database</a>
+                <a href="/admin/logout" class="btn btn-link">Logout</a>
+            {% else %}
+                <a href="/admin" class="btn btn-link">Administration</a>
+            {% endif %}
+        </div>
+    </section>
+</header>

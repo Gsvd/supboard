@@ -1,0 +1,21 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="{% static "css/spectre.min.css" %}">
+    <link rel="stylesheet" href="{% static "css/spectre-exp.min.css" %}">
+    <link rel="stylesheet" href="{% static "css/spectre-icons.min.css" %}">
+    <link rel="stylesheet" href="{% static "css/font-awesome.min.css" %}">
+    <link rel="stylesheet" href="{% static "css/hover-min.css" %}">
+    <link rel="stylesheet" href="{% static "css/style.css" %}">
+    <title>SupBoard</title>
+</head>
+<body>
+{% include "public/nav.html" %}
+<div class="container">
+    {% block content %}{% endblock %}
+</div>
+{% include "public/footer.html" %}
+</body>
+</html>

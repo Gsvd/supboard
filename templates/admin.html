@@ -1,0 +1,40 @@
+{% extends "public/base.html" %}
+
+{% block content %}
+    {% if user.is_authenticated %}
+
+    {% else %}
+        <div class="col-3 col-mx-auto login-form">
+            <div class="col-8 col-mx-auto login-group">
+                <form method="post" action="">
+                    {% csrf_token %}
+                    <div class="col-12">
+                        {{ form.username.label_tag }}
+                    </div>
+                    <div class="col-12">
+                        {{ form.username }}
+                    </div>
+                    <div class="col-12">
+                        {{ form.password.label_tag }}
+                    </div>
+                    <div class="col-12">
+                        {{ form.password }}
+                    </div>
+                    <input type="submit" value="Login" class="btn form-input" />
+                </form>
+            </div>
+            <div class="col-12 messages">
+                {% if messages %}
+                    {% for message in messages %}
+                        <div class="col-8 col-mx-auto">
+                            <div class=" col-8 toast toast-{{ message.tags }}">
+                                <button class="btn btn-clear float-right" onclick="dismiss($(this).parent())"></button>
+                                {{ message }}
+                            </div>
+                        </div>
+                    {% endfor %}
+                {% endif %}
+            </div>
+        </div>
+    {% endif %}
+{% endblock %}

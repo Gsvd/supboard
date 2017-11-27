@@ -1,0 +1,26 @@
+{% extends "public/base.html" %}
+
+{% block content %}
+    <div class="index_block">
+        <div class="col-8">
+
+        </div>
+        <div class="col-4 twitter_block">
+            {% if tweets %}
+                {% for tweet in tweets %}
+                    <div class="col-12 tweet_block">
+                        <div class="col-12 tweet_author">
+                            {{ tweet.author }}
+                        </div>
+                        <div class="col-12 tweet_text">
+                            {{ tweet.text|safe }}
+                        </div>
+                        <div class="col-12 tweet_date">
+                            {{ tweet.created_at }}
+                        </div>
+                    </div>
+                {% endfor %}
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}

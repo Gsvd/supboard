@@ -1,0 +1,38 @@
+{% extends "public/base.html" %}
+
+{% block content %}
+    {% if user.is_authenticated %}
+        <div class="col-3 col-mx-auto login-form">
+            <div class="col-8 col-mx-auto login-group">
+                <form id="upload_form" method="post" action="" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <div class="col-12">
+                        {{ upload.csvFile.label_tag }}
+                    </div>
+                    <div class="col-12">
+                        {{ upload.csvFile }}
+                    </div>
+                    <button id="sendCSV" class="btn btn-block disabled">Send</button>
+                </form>
+            </div>
+            <div class="col-12 reset-planning">
+                <form action="{% url "admin_page:planning_delete" %}" method="post">
+                    {% csrf_token %}
+                    <button class="btn btn-primary" tabindex="-1">Empty Planning</button>
+                </form>
+            </div>
+            <div class="col-12 messages">
+                {% if messages %}
+                    {% for message in messages %}
+                        <div class="col-8 col-mx-auto">
+                            <div class=" col-8 toast toast-{{ message.tags }}">
+                                <button class="btn btn-clear float-right" onclick="dismiss($(this).parent())"></button>
+                                {{ message }}
+                            </div>
+                        </div>
+                    {% endfor %}
+                {% endif %}
+            </div>
+        </div>
+    {% endif %}
+{% endblock %}
