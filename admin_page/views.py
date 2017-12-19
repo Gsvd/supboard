@@ -93,7 +93,6 @@ def import_csv(file):
     with open(file, encoding="utf8", errors="replace") as csv_file:
         reader = csv.reader(csv_file, delimiter=",")
         for index, row in enumerate(reader):
-            logger.error(row)
             if index > 0 and check_row(row):
                 row = format_row(row)
                 query = Planning()
