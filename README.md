@@ -7,7 +7,7 @@ SupBoard is a tool developed and maintained by Guillaume Sivade for the SUPINFO 
 
 #### installation
 
-* install python 3 with pip
+* install python 3 and pip
 * go to the root app folder
 * ``` pip install -r requirements.txt ```
 * ``` python manage.py migrate ```
