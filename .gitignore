@@ -10,4 +10,3 @@ supboard/__pycache__/
 planning/__pycache__/
 admin_page/migrations/
 db
-supboard/enums.py

@@ -23,7 +23,7 @@ class RowTarget(Enum):
     TEACHER = 5
     HOUR = 7
     DURATION = 13
-    CLASSROOM = 14
+    CLASSROOM = 8
 
 
 class Twitter(Enum):
