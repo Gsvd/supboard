@@ -1,5 +1,5 @@
 import datetime
-from datetime import date
+from datetime import date, timedelta
 
 from django.shortcuts import render
 
@@ -18,7 +18,12 @@ def planning(request, year=0, month=0, day=0):
                 Planning.objects.filter(date=date_planning, grade=4).order_by("hour"),
                 Planning.objects.filter(date=date_planning, grade=5).order_by("hour")
                 ]
+    previous = date_planning - timedelta(days=1)
+    next = date_planning + timedelta(days=1)
     datas = {
+        "previous": previous.strftime("%Y-%m-%d"),
+        "next": next.strftime("%Y-%m-%d"),
+        "today": date_planning.strftime("%A %d %B %Y"),
         "plannings": plannings
     }
     return render(request, "planning.html", datas)

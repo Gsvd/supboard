@@ -1,11 +1,21 @@
 {% load staticfiles %}
 <header class="navbar">
     <section class="navbar-section">
+        {% if plannings %}
+            <a href="/planning/date/{{ previous }}" style="color: white; margin-right: 5px; margin-left: 2.5px;"><i class="fa fa-arrow-left" aria-hidden="true"></i></a>
+        {% endif %}
         <a href="/planning" class="btn btn-link"><i class="fa fa-calendar" aria-hidden="true"></i></a>
+        {% if plannings %}
+            <a href="/planning/date/{{ next }}" style="color: white; margin-left: 5px;"><i class="fa fa-arrow-right" aria-hidden="true"></i></a>
+        {% endif %}
     </section>
     <section class="navbar-center">
-        <a href="/">
-            <img src="{% static "images/spectre_logo.svg" %}">
+        <a href="/" style="color: white;">
+            {% if plannings %}
+                {{ today }}
+            {% else %}
+                <img src="{% static "images/spectre_logo.svg" %}">
+            {% endif %}
         </a>
     </section>
     <section class="navbar-section">
