@@ -4,6 +4,9 @@
     {% if user.is_authenticated %}
         <div class="columns">
             <div class="column col-4 col-mx-auto login-form">
+                <div class="col-12 col-mx-auto title-block">
+                    Planning gestion
+                </div>
                 <div class="col-8 col-mx-auto login-group">
                     <form id="upload_form" method="post" action="" enctype="multipart/form-data">
                         {% csrf_token %}
@@ -24,20 +27,29 @@
                 </div>
             </div>
             <div class="column col-4 col-mx-auto login-form">
+                <div class="col-12 col-mx-auto title-block">
+                    Today's classrooms
+                </div>
                 <div class="col-8 col-mx-auto login-group">
                     <form id="upload_form" method="post" action="" enctype="multipart/form-data">
                         {% csrf_token %}
                         {% for element in classroom %}
-                            <div class="columns col-mx-auto">
-                                <div class="column col-12">
-                                    {{ element.label_tag }}
+                            {% if not element.is_hidden %}
+                                <div class="columns col-mx-auto">
+                                    <div class="column col-12">
+                                        {{ element.label_tag }}
+                                    </div>
+                                    <div class="column col-12">
+                                        {{ element }}
+                                    </div>
                                 </div>
-                                <div class="column col-12">
-                                    {{ element }}
-                                </div>
-                            </div>
+                            {% endif %}
                         {% endfor %}
-                        <button id="updateClassroom" class="btn btn-block">Update classrooms</button>
+                        {% if at_least_one_grade %}
+                            <button id="updateClassroom" class="btn btn-primary" style="margin-top: 25px; width: 100%;">Update classrooms</button>
+                        {% else %}
+                            <div class="col-12" style="text-align: center;">There is no course today.</div>
+                        {% endif %}
                     </form>
                 </div>
             </div>

@@ -7,6 +7,8 @@ import datetime
 import pandas as pd
 
 from django.http.response import HttpResponseRedirect
+from django import forms
+from django.db.transaction import atomic
 from django.shortcuts import render
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
@@ -17,7 +19,7 @@ from .forms import LoginForm, UploadForm, ClassroomForm
 from supboard.enums import Url
 from supboard.enums import RowTarget
 from admin_page.utils import get_grade_by_id
-from admin_page.utils import grade_has_course
+from admin_page.utils import get_classrooms_by_date, grade_has_course, at_least_one_grade_on_campus_today
 
 
 def admin_index(request):
@@ -50,38 +52,39 @@ def admin_logout(request):
 
 
 @login_required
+@atomic
 def admin_upload(request):
-    if request.method == "POST":
-        upload = UploadForm(request.POST, request.FILES)
-        classroom = ClassroomForm(request.POST)
-        if upload.is_valid():
-            valid_extensions = [".csv", ".xlsx"]
-            ext = os.path.splitext(request.FILES["csvFile"].name)[1]
-            if ext not in valid_extensions:
-                messages.error(request, "File type not allowed!")
-            else:
-                Planning.objects.all().delete()
-                tmp_files = []
-                file_path = handle_uploaded_file(request.FILES["csvFile"], ext)
+    upload = UploadForm(request.POST or None, request.FILES or None)
+    initial = get_classrooms_by_date(datetime.datetime.today().strftime('%Y-%m-%d'))
+    classroom = ClassroomForm(request.POST or None, initial=initial)
+    if upload.is_valid():
+        valid_extensions = [".csv", ".xlsx"]
+        ext = os.path.splitext(request.FILES["csvFile"].name)[1]
+        if ext not in valid_extensions:
+            messages.error(request, "File type not allowed!")
+        else:
+            Planning.objects.all().delete()
+            tmp_files = []
+            file_path = handle_uploaded_file(request.FILES["csvFile"], ext)
+            tmp_files.append(file_path)
+            if ext == valid_extensions[1]:
+                file_path = convert_xlsx_csv(file_path)
                 tmp_files.append(file_path)
-                if ext == valid_extensions[1]:
-                    file_path = convert_xlsx_csv(file_path)
-                    tmp_files.append(file_path)
-                import_csv(file_path)
-                delete_tmp_files(tmp_files)
-                messages.success(request, "Upload successful")
-        elif classroom.is_valid():
-            today = datetime.datetime.today().strftime('%Y-%m-%d')
-            for i in range(1, 6):
-                data = Planning.objects.filter(date=today, grade=i).order_by("hour")
-                for entry in data:
-                    entry.classroom = classroom.cleaned_data[get_grade_by_id(i)]
-                    entry.save()
-            messages.success(request, "Classroom modification successful")
-    else:
-        upload = UploadForm()
-        classroom = ClassroomForm()
-    return render(request, "upload.html", {"upload": upload, "classroom": classroom})
+            import_csv(file_path)
+            delete_tmp_files(tmp_files)
+            messages.success(request, "Upload successful")
+    elif classroom.is_valid():
+        today = datetime.datetime.today().strftime('%Y-%m-%d')
+        for i in range(1, 6):
+            data = Planning.objects.filter(date=today, grade=i).order_by("hour")
+            for entry in data:
+                entry.classroom = classroom.cleaned_data[get_grade_by_id(i)]
+                entry.save()
+        messages.success(request, "Classrooms modifications recorded")
+    for i in range(1, 6):
+        if not grade_has_course(i):
+            classroom.fields["grade_" + str(i)].widget = forms.HiddenInput()
+    return render(request, "upload.html", {"upload": upload, "classroom": classroom, "at_least_one_grade": at_least_one_grade_on_campus_today()})
 
 
 def delete_tmp_files(tmp_files):
