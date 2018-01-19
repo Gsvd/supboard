@@ -17,6 +17,7 @@ from .forms import LoginForm, UploadForm, ClassroomForm
 from supboard.enums import Url
 from supboard.enums import RowTarget
 from admin_page.utils import get_grade_by_id
+from admin_page.utils import grade_has_course
 
 
 def admin_index(request):
