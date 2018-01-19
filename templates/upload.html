@@ -22,18 +22,6 @@
                         <button class="btn btn-primary" tabindex="-1">Empty Planning</button>
                     </form>
                 </div>
-                <div class="col-12 messages">
-                    {% if messages %}
-                        {% for message in messages %}
-                            <div class="col-8 col-mx-auto">
-                                <div class=" col-8 toast toast-{{ message.tags }}">
-                                    <button class="btn btn-clear float-right" onclick="dismiss($(this).parent())"></button>
-                                    {{ message }}
-                                </div>
-                            </div>
-                        {% endfor %}
-                    {% endif %}
-                </div>
             </div>
             <div class="column col-4 col-mx-auto login-form">
                 <div class="col-8 col-mx-auto login-group">
@@ -52,6 +40,20 @@
                         <button id="updateClassroom" class="btn btn-block">Update classrooms</button>
                     </form>
                 </div>
+            </div>
+        </div>
+        <div class="col-mx-auto col-2">
+            <div class="col-12 messages">
+                {% if messages %}
+                    {% for message in messages %}
+                        <div class="col-8 col-mx-auto">
+                            <div class=" col-8 toast toast-{{ message.tags }}">
+                                <button class="btn btn-clear float-right" onclick="dismiss($(this).parent())"></button>
+                                {{ message }}
+                            </div>
+                        </div>
+                    {% endfor %}
+                {% endif %}
             </div>
         </div>
     {% endif %}

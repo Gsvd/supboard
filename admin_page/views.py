@@ -76,6 +76,7 @@ def admin_upload(request):
                 for entry in data:
                     entry.classroom = classroom.cleaned_data[get_grade_by_id(i)]
                     entry.save()
+            messages.success(request, "Classroom modification successful")
     else:
         upload = UploadForm()
         classroom = ClassroomForm()
