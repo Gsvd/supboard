@@ -12,8 +12,8 @@ class Planning(models.Model):
     teacher = models.CharField(max_length=255)
     hour = models.TimeField()
     duration = models.TimeField()
-    classroom = models.CharField(max_length=255)
-    exam_type = models.CharField(default="", max_length=255)
+    classroom = models.CharField(max_length=255, blank=True)
+    exam_type = models.CharField(default="", max_length=255, blank=True)
 
     def __str__(self):
         return str(self.id) + "\t\t" + self.course_code + "\t\t" + self.date.strftime("%Y-%m-%d") + "\t\t" + self.exam_type

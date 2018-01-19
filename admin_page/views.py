@@ -13,9 +13,10 @@ from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 
 from planning.models import Planning
-from .forms import LoginForm, UploadForm
+from .forms import LoginForm, UploadForm, ClassroomForm
 from supboard.enums import Url
 from supboard.enums import RowTarget
+from admin_page.utils import get_grade_by_id
 
 
 def admin_index(request):
@@ -51,6 +52,7 @@ def admin_logout(request):
 def admin_upload(request):
     if request.method == "POST":
         upload = UploadForm(request.POST, request.FILES)
+        classroom = ClassroomForm(request.POST)
         if upload.is_valid():
             valid_extensions = [".csv", ".xlsx"]
             ext = os.path.splitext(request.FILES["csvFile"].name)[1]
@@ -67,9 +69,17 @@ def admin_upload(request):
                 import_csv(file_path)
                 delete_tmp_files(tmp_files)
                 messages.success(request, "Upload successful")
+        elif classroom.is_valid():
+            today = datetime.datetime.today().strftime('%Y-%m-%d')
+            for i in range(1, 6):
+                data = Planning.objects.filter(date=today, grade=i).order_by("hour")
+                for entry in data:
+                    entry.classroom = classroom.cleaned_data[get_grade_by_id(i)]
+                    entry.save()
     else:
         upload = UploadForm()
-    return render(request, "upload.html", {"upload": upload})
+        classroom = ClassroomForm()
+    return render(request, "upload.html", {"upload": upload, "classroom": classroom})
 
 
 def delete_tmp_files(tmp_files):
@@ -102,7 +112,6 @@ def import_csv(file):
                 query.teacher = row[RowTarget.TEACHER.value]
                 query.hour = row[RowTarget.HOUR.value]
                 query.duration = datetime.datetime(year=2000, month=1, day=1, hour=int(row[RowTarget.DURATION.value]), minute=0)
-                query.classroom = row[RowTarget.CLASSROOM.value]
                 query.exam_type = is_exam(row[RowTarget.COURSE_NAME.value])
                 query.save()
     return True

@@ -14,7 +14,7 @@
                         <div class="col {% if course.exam_type %}is_exam{% endif %}">
                             <div class="hour">
                                 <div class="first">{{ course.get_course_start }}</div>
-                                <div class="classroom"></div>
+                                <div class="classroom">{{ course.classroom }}</div>
                                 <div class="second">{{ course.get_course_end }}</div>
                             </div>
                             <div class="course" style="font-weight: bold;">

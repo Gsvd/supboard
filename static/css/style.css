@@ -248,12 +248,17 @@ body .container .row .col .teacher {
 }
 
 body .container .login-form {
+    padding: 7vh;
     margin-top: 10vh;
     background: white;
     min-height: 35vh;
+    height: auto;
     border-radius: 5px;
-    padding-top: 7vh;
     box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.1), -1px 0 2px rgba(0, 0, 0, 0.05);
+}
+
+body .container .login-form input {
+    margin-bottom: 10px;
 }
 
 body .container .login-form .messages {
