@@ -226,7 +226,7 @@ body .container .row .col .hour .first {
 }
 
 body .container .row .col .hour .classroom {
-    font-weight: bold;
+    font-weight: normal;
     flex-grow: 1;
     text-align: center;
 }
