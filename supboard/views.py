@@ -3,7 +3,7 @@ import tweepy
 import logging
 import re
 
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from tweepy.error import TweepError
 
 from .enums import Twitter
@@ -13,6 +13,7 @@ logger = logging.getLogger(__name__)
 
 
 def index(request):
+    return redirect('/planning')
     auth = tweepy.OAuthHandler(Twitter.CONSUMER_TOKEN.value,
                                Twitter.CONSUMER_SECRET.value)
     auth.set_access_token(Twitter.APP_TOKEN.value,
