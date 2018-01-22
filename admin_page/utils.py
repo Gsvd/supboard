@@ -1,6 +1,5 @@
 import datetime
 from planning.models import Planning
-from supboard.enums import Grade
 
 
 def grade_has_course(grade):
@@ -15,6 +14,8 @@ def at_least_one_grade_on_campus_today():
     for i in range(1, 6):
         count = Planning.objects.filter(date=date, grade=i).count()
         at_least = True if count > 0 else False
+        if at_least:
+            break
     return at_least
 
 def get_grades_on_campus():
